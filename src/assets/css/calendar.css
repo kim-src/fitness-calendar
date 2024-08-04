@@ -1,0 +1,38 @@
+body {
+    margin: 1%;
+    padding: 0;
+}
+
+
+/* 상단 툴바 스타일 */
+.fc-toolbar-chunk {
+    padding-top: 1%;
+}
+/* 상단 툴바의 헤더 스타일 */
+.fc-toolbar-title {
+    font-size: 16px;
+    color: #ffba00;
+    align-items: center;
+}
+/* 상단 해더의 화살표 버튼 스타일 */
+.fc .fc-button-primary {
+    background-color: #00af37;
+    border: none;
+}
+.fc .fc-button-primary:hover {
+    background-color: #005f1e;
+    border: none;
+}
+.fc .fc-button-primary:disabled {
+    background-color: #00af37;
+    border: none;
+}
+
+
+/* 달력 내부 스타일 */
+.fc-daygrid-day {
+    cursor : pointer;
+}
+.fc-daygrid-day-top {
+    margin: 0;
+}
