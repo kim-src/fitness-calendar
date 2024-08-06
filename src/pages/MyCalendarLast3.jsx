@@ -5,7 +5,6 @@ import { useRef, useState } from 'react'
 import '../assets/css/calendar.css'
 import Editor from '../components/Editor'
 import FitnessItem from '../components/FitnessItem'
-import React from 'react'
 
 function MyCalendar(props) {
 
@@ -26,7 +25,6 @@ function MyCalendar(props) {
         // 달력 내부를 클릭하면 setShowEditor의 상태를 true로 변환
         setShowEditor(true);
         // 달력 내부를 클릭하면 클릭된 날짜를 setSelectedDate에 전달
-        // arg.dateStr = FullCalendar 라이브러리에서 제공하는 arg 객체의 속성
         setSelectedDate(arg.dateStr);
     }
 
@@ -53,45 +51,42 @@ function MyCalendar(props) {
             setContents(currentContents => [...currentContents, newContent]);
             setShowEditor(false);
         }
+    }
+
+    const handleCheckbox = (id, checked) => {
+        setContents(current =>
+            current.map(item =>
+                item.id === id ? { ...item, isChecked: checked } : item
+            )
+        );
     };
 
-    // eventInfo = FullCalendar에서 제공하는 event 객체를 포함하는 객체
-    const eventContent = (eventInfo) => {
-        // 객체의 구조-분해-할당 사용
-        // eventInfo 객체에 포함된 event 객체 추출
-        // event 객체에 포함된 id, title 등에 쉽게 접근 가능(필수 방식은 아님)
-        const {event} = eventInfo
+    const onDelete = (id) => {
+        setContents(current => current.filter(item => item.id !== id));
+    };
 
-        return (
-            // FitnessItem 호출
-            <FitnessItem
-                // FitnessItem 컴포넌트에 id 전달
-                id={event.id}
-                // FitnessItem 컴포넌트에 title 전달
-                title={event.title}
-            ></FitnessItem>
-        );
+    const eventContent = (eventInfo) => {
+        return {
+            html: `
+                <div class='fitness-item'>
+                    <input
+                        type="checkbox"
+                        ${eventInfo.event.extendedProps.isChecked ? 'checked' : ''}
+                        data-id="${eventInfo.event.id}"
+                    />
+                    <span
+                        style="text-decoration: ${eventInfo.event.extendedProps.isChecked ? 'line-through' : 'none'};
+                            color: ${eventInfo.event.extendedProps.isChecked ? 'gray' : 'white'};">
+                        ${eventInfo.event.title}
+                    </span>
+                </div>
+            `
+        };
     };
 
     return (
         <div>
             <div>
-                {/* Calendar Contents */}
-                <FullCalendar
-                    // plugins = 사용할 플러그인 속성
-                    plugins={[ dayGridPlugin, interactionPlugin ]}
-                    // initialView = 달력 구성 속성
-                    initialView="dayGridMonth"
-                    // events = 상태 업데이트 관련 속성
-                    // contents = 달력 내부에 표시될 내용
-                    events={contents}
-                    // eventContent = FullCalendar의 커스텀 HTML 또는 React 컴포넌트 삽입을 위한 속성
-                    eventContent={eventContent}
-                    // dateClick = 달력 내부를 클릭했을 때 실행될 기능을 포함하는 속성
-                    dateClick={addRoutine}
-                    // button 텍스트 수정을 위한 속성
-                    buttonText={{ today : '이번달' }}
-                ></FullCalendar>
                 {/* showEditor의 상태가 true일 경우 Editor 컴포넌트 렌더링 */}
                 {showEditor &&
                     <Editor
@@ -103,6 +98,21 @@ function MyCalendar(props) {
                         onSave={saveRoutine}
                     ></Editor>
                 }
+                {/* Calendar Contents */}
+                <FullCalendar
+                    // plugins = 사용할 플러그인
+                    plugins={[ dayGridPlugin, interactionPlugin ]}
+                    // initialView = 달력 구성
+                    initialView="dayGridMonth"
+                    // events = 달력 내부에 표시될 내용
+                    // contents 상태 업데이트 관련
+                    events={contents}
+                    eventContent={eventContent}
+                    // dateClick = 달력 내부를 클릭했을 때 실행될 기능
+                    dateClick={addRoutine}
+                    // button 텍스트 수정
+                    buttonText={{ today : '이번달' }}
+                ></FullCalendar>
             </div>
         </div>
     )
