@@ -17,6 +17,17 @@ function Editor({date, onClose, onSave}) {
         setTitle('');
     }
 
+    // 이벤트 발생 시 enterHandleSave 함수 실행
+    const keyHandler = (e) => {
+        // 엔터 입력 시 handleSave 함수 실행
+        if(e.keyCode === 13) {
+            handleSave();
+        }
+        if(e.keyCode === 27) {
+            onClose();
+        }
+    }
+
     return (
         <div>
             <div
@@ -39,12 +50,16 @@ function Editor({date, onClose, onSave}) {
                 {/* 사용자에게 내용 입력 기능 제공 */}
                 <input
                     type="text"
+                    // 자동으로 포커스 설정
+                    autoFocus
+                    // value에 title 할당
                     value={title}
                     // e = 이벤트 정보가 담긴 객체
                     // e.target = 이벤트가 발생한 DOM 요소
                     // e.target.value = 입력 필드의 현재 값
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="운동 루틴을 입력하세요."
+                    onKeyDown={keyHandler}
                 ></input>
                 {/* handleSave 함수에 데이터 저장 */}
                 <button onClick={handleSave}>저장</button>

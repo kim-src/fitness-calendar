@@ -53,13 +53,22 @@ function MyCalendar(props) {
             // currentContents = contents 배열의 상태 참조 매개변수
             // newContent = title 및 date 데이터를 포함하는 이벤트 객체
             setContents(currentContents => [...currentContents, newContent]);
+            // 내용 추가 후 Editor 컴포넌트 상태 false로 변경
             setShowEditor(false);
         }
     };
 
+    // handleIsDone 함수에 전달된 인자 = event 객체의 id
     const handleIsDone = (id) => {
-        setContents(prevEvents => prevEvents.map(event =>
-            event.id === id ? { ...event, isDone: !event.isDone } : event
+        // 업데이트 된 contents 상태에 접근
+        // currentEvents.map = 모든 이벤트를 순회하며 특정 조건에 따른 업데이트 수행
+        // map 함수 = 배열의 각 요소에 함수 실행 및 결과 반환 역할
+        setContents(currentEvents => currentEvents.map(event =>
+            // event 객체의 id와 함수에 전달된 id가 일치할 경우
+            // event 객체의 isDone을 event 객체의 isDone이 아니게 설정
+            // 즉, false 상태의 isDone을 true로 변환
+            // 아니라면 event 객체 상태 유지
+            event.id === id ? { ...event, isDone : !event.isDone } : event
         ));
     };
 
@@ -69,16 +78,24 @@ function MyCalendar(props) {
     // eventInfo 객체에 포함된 event 객체 추출
     // event 객체에 포함된 id, title 등에 쉽게 접근 가능(필수 방식은 아님)
     const eventContent = ({event}) => {
+        // extendedProps = FullCalendar 기본 속성이 아닌 커스텀 속성 포함
+        // isDone 상태 확인을 위한 콘솔 출력
+        // console.log("event.extendedProps 내용 :", event.extendedProps)
 
         return (
             // FitnessItem 호출
             <FitnessItem
-                // FitnessItem 컴포넌트에 id 전달
+                // FitnessItem 컴포넌트에 id 값 전달
                 id={event.id}
-                // FitnessItem 컴포넌트에 title 전달
+                // FitnessItem 컴포넌트에 title 값 전달
                 title={event.title}
+                // event 객체의 extendedProps 속성의 isDone 속성값 전달
                 isDone={event.extendedProps.isDone}
-                onToggle={() => handleIsDone(event.id)}
+                // Toggle = 반전 기능 관련
+                // handleIsDone 함수에 event 객체의 id 전달
+                // parseInt = event.id를 정수로 변환하는 기능 제공
+                // parseInt 사용으로 FullCalendar에서 이벤트 id를 문자열로 처리하는 문제 해결
+                onToggle={() => handleIsDone(parseInt(event.id))}
             ></FitnessItem>
         );
     };
