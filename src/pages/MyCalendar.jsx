@@ -40,7 +40,9 @@ function MyCalendar(props) {
                 // title = 달력 내부에 표시되는 텍스트
                 title : title,
                 // date = 특정 날짜 지정
-                date : selectedDate
+                date : selectedDate,
+                // isDone = 운동 완료 상태 체크용 속성
+                isDone : false
             };
 
             // 객체 상태 확인(디버깅)
@@ -55,12 +57,18 @@ function MyCalendar(props) {
         }
     };
 
+    const handleIsDone = (id) => {
+        setContents(prevEvents => prevEvents.map(event =>
+            event.id === id ? { ...event, isDone: !event.isDone } : event
+        ));
+    };
+
     // eventInfo = FullCalendar에서 제공하는 event 객체를 포함하는 객체
-    const eventContent = (eventInfo) => {
-        // 객체의 구조-분해-할당 사용
-        // eventInfo 객체에 포함된 event 객체 추출
-        // event 객체에 포함된 id, title 등에 쉽게 접근 가능(필수 방식은 아님)
-        const {event} = eventInfo
+    // event 객체 = eventInfo 객체에 포함된 이벤트 객체
+    // 객체의 구조-분해-할당 사용
+    // eventInfo 객체에 포함된 event 객체 추출
+    // event 객체에 포함된 id, title 등에 쉽게 접근 가능(필수 방식은 아님)
+    const eventContent = ({event}) => {
 
         return (
             // FitnessItem 호출
@@ -69,6 +77,8 @@ function MyCalendar(props) {
                 id={event.id}
                 // FitnessItem 컴포넌트에 title 전달
                 title={event.title}
+                isDone={event.extendedProps.isDone}
+                onToggle={() => handleIsDone(event.id)}
             ></FitnessItem>
         );
     };
