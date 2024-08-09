@@ -7,7 +7,7 @@ function Editor({date, onClose, onSave}) {
 
     // 운동 내용 입력을 위한 useState 사용
     // title = FullCalendar의 내용 속성
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState('');    
 
     // 저장 버튼 클릭 시 호출될 handleSave 함수 정의
     const handleSave = () => {
@@ -30,6 +30,9 @@ function Editor({date, onClose, onSave}) {
 
     return (
         <div>
+            <div>
+
+            </div>
             <div
                 style={{
                     // 상단으로부터 20%, 좌측으로부터 50% 위치에 고정

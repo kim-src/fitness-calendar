@@ -6,6 +6,7 @@ import '../assets/css/calendar.css'
 import Editor from '../components/Editor'
 import FitnessItem from '../components/FitnessItem'
 import React from 'react'
+import FitnessTimer from '../components/FitnessTimer'
 
 function MyCalendar(props) {
 
@@ -14,10 +15,12 @@ function MyCalendar(props) {
     // contents = 달력의 입력 이벤트를 할당하기 위해 사용
     // 배열 초기화 이유 = 최소 title 및 date 데이터를 할당시키기 위한 목적
     const [contents, setContents] = useState([]);
-    // showEditor = Editor 컴포넌트의 상태를 저장하는 상태 변수
-    const [showEditor, setShowEditor] = useState(false);
     // selectedDate = 선택된 날짜를 저장하는 상태 변수
     const [selectedDate, setSelectedDate] = useState(null);
+    // showEditor = Editor 컴포넌트의 상태를 저장하는 상태 변수
+    const [showEditor, setShowEditor] = useState(false);
+    // showTimer = FitnessTimer 컴포넌트의 상태를 저장하는 상태 변수
+    const [showTimer, setShowTimer] = useState(false);
     // id 부여를 위한 useRef 훅 사용
     const idRef = useRef(1);
 
@@ -28,6 +31,10 @@ function MyCalendar(props) {
         // 달력 내부를 클릭하면 클릭된 날짜를 setSelectedDate에 전달
         // arg.dateStr = FullCalendar 라이브러리에서 제공하는 arg 객체의 속성
         setSelectedDate(arg.dateStr);
+    }
+
+    const goFitnessTimer = () => {
+        setShowTimer(true);
     }
 
     // Editor.jsx에서 title이 입력될 경우 실행
@@ -102,35 +109,39 @@ function MyCalendar(props) {
 
     return (
         <div>
-            <div>
-                {/* Calendar Contents */}
-                <FullCalendar
-                    // plugins = 사용할 플러그인 속성
-                    plugins={[ dayGridPlugin, interactionPlugin ]}
-                    // initialView = 달력 구성 속성
-                    initialView="dayGridMonth"
-                    // events = 상태 업데이트 관련 속성
-                    // contents = 달력 내부에 표시될 내용
-                    events={contents}
-                    // eventContent = FullCalendar의 커스텀 HTML 또는 React 컴포넌트 삽입을 위한 속성
-                    eventContent={eventContent}
-                    // dateClick = 달력 내부를 클릭했을 때 실행될 기능을 포함하는 속성
-                    dateClick={addRoutine}
-                    // button 텍스트 수정을 위한 속성
-                    buttonText={{ today : '이번달' }}
-                ></FullCalendar>
-                {/* showEditor의 상태가 true일 경우 Editor 컴포넌트 렌더링 */}
-                {showEditor &&
-                    <Editor
-                        // date prop = Editor 컴포넌트에 selectedDate 전달
-                        date={selectedDate}
-                        // onClose prop = 익명 함수로 setShowEditor 상태를 false로 설정
-                        onClose={() => setShowEditor(false)}
-                        // onSave prop = Editor 컴포넌트와 상호작용하여 데이터 수신
-                        onSave={saveRoutine}
-                    ></Editor>
-                }
-            </div>
+            <button onClick={goFitnessTimer}>타이머</button>
+            {showTimer &&
+                <FitnessTimer
+                    onClose={() => setShowTimer(false)}
+                ></FitnessTimer>
+            }
+            {/* Calendar Contents */}
+            <FullCalendar
+                // plugins = 사용할 플러그인 속성
+                plugins={[ dayGridPlugin, interactionPlugin ]}
+                // initialView = 달력 구성 속성
+                initialView="dayGridMonth"
+                // events = 상태 업데이트 관련 속성
+                // contents = 달력 내부에 표시될 내용
+                events={contents}
+                // eventContent = FullCalendar의 커스텀 HTML 또는 React 컴포넌트 삽입을 위한 속성
+                eventContent={eventContent}
+                // dateClick = 달력 내부를 클릭했을 때 실행될 기능을 포함하는 속성
+                dateClick={addRoutine}
+                // button 텍스트 수정을 위한 속성
+                buttonText={{ today : '이번달' }}
+            ></FullCalendar>
+            {/* showEditor의 상태가 true일 경우 Editor 컴포넌트 렌더링 */}
+            {showEditor &&
+                <Editor
+                    // date prop = Editor 컴포넌트에 selectedDate 전달
+                    date={selectedDate}
+                    // onClose prop = 익명 함수로 setShowEditor 상태를 false로 설정
+                    onClose={() => setShowEditor(false)}
+                    // onSave prop = Editor 컴포넌트와 상호작용하여 데이터 수신
+                    onSave={saveRoutine}
+                ></Editor>
+            }
         </div>
     )
 }
