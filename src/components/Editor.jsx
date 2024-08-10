@@ -37,15 +37,15 @@ function Editor({date, onClose, onSave}) {
                 style={{
                     // 상단으로부터 20%, 좌측으로부터 50% 위치에 고정
                     position : 'absolute',
-                    top : '20%',
-                    left : '50%',
+                    top: '20%',
+                    left: '50%',
                     // 컴포넌트의 너비에 상관없이 항상 중앙에 위치하도록 설정
-                    transform : 'translateX(-50%)',
-                    background : 'white',
-                    padding : '20px',
-                    boxShadow : '0 2px 7px rgba(0,0,0,0.7)',
+                    transform: 'translateX(-50%)',
+                    background: 'white',
+                    padding: '20px',
+                    boxShadow: '0 2px 7px rgba(0,0,0,0.7)',
                     // z-index 값 조정
-                    zIndex : 1000
+                    zIndex: 1000
                 }}
             >
                 {/* MyCalendar 컴포넌트의 date */}
