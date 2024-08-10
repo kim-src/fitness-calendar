@@ -27,7 +27,6 @@ body {
 /* 글자 버튼 */
 .fc .fc-button-primary:disabled {
     background-color: #00af37;
-    border: none;
 }
 
 

@@ -1,11 +1,11 @@
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"
 import FullCalendar from '@fullcalendar/react'
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import '../assets/css/calendar.css'
+import '../assets/css/time-button.css'
 import Editor from '../components/Editor'
 import FitnessItem from '../components/FitnessItem'
-import React from 'react'
 import FitnessTimer from '../components/FitnessTimer'
 
 function MyCalendar(props) {
@@ -109,13 +109,19 @@ function MyCalendar(props) {
 
     return (
         <div>
-            <button onClick={goFitnessTimer}>타이머</button>
-            {showTimer &&
-                <FitnessTimer
-                    onClose={() => setShowTimer(false)}
-                ></FitnessTimer>
-            }
-            {/* Calendar Contents */}
+            {/* 스톱워치 및 타이머 영역 */}
+            <div className='time-button'>
+                <button
+                    className='stopwatch-button'
+                    onClick={goFitnessTimer}
+                >스톱워치</button>
+                <button
+                    className='timer-button'
+                    onClick={goFitnessTimer}
+                >타이머</button>
+            </div>
+
+            {/* Calendar Contents 영역 */}
             <FullCalendar
                 // plugins = 사용할 플러그인 속성
                 plugins={[ dayGridPlugin, interactionPlugin ]}
@@ -131,6 +137,7 @@ function MyCalendar(props) {
                 // button 텍스트 수정을 위한 속성
                 buttonText={{ today : '이번달' }}
             ></FullCalendar>
+
             {/* showEditor의 상태가 true일 경우 Editor 컴포넌트 렌더링 */}
             {showEditor &&
                 <Editor
@@ -141,6 +148,12 @@ function MyCalendar(props) {
                     // onSave prop = Editor 컴포넌트와 상호작용하여 데이터 수신
                     onSave={saveRoutine}
                 ></Editor>
+            }
+
+            {showTimer &&
+                <FitnessTimer
+                    onClose={() => setShowTimer(false)}
+                ></FitnessTimer>
             }
         </div>
     )

@@ -44,7 +44,7 @@ function Editor({date, onClose, onSave}) {
                     background : 'white',
                     padding : '20px',
                     boxShadow : '0 2px 7px rgba(0,0,0,0.7)',
-                    // z-index 값을 최대치로 설정하여 상위 요소로 설정
+                    // z-index 값 조정
                     zIndex : 1000
                 }}
             >

@@ -12,7 +12,7 @@ function FitnessItem({title, isDone, onToggle}) {
             <span
                 style={{
                     textDecoration : isDone ? 'line-through' : 'none',
-                    color : isDone ? 'gray' : 'white'
+                    color : isDone ? 'gray' : ''
                 }}
             >{title}</span>
         </div>
