@@ -3,8 +3,9 @@ import '../assets/css/fitness-timer.css'
 
 function FitnessTimer({onClose}) {
     
-    const [initialTime, setInitialTime] = useState(0);
-    const [deliveredTime, setDeliveredTime] = useState(0);
+    const [initialTime, setInitialTime] = useState('');
+    const [deliveredTime, setDeliveredTime] = useState('');
+    const [displayTime, setDisplayTime] = useState({hours:'',minutes:'',seconds:''})
     const [isActive, setIsActive] = useState(false);
 
     /* 타이머 시간 설정 */
@@ -13,7 +14,7 @@ function FitnessTimer({onClose}) {
         setDeliveredTime(initialTime)
         // console.log('initialTIme : ', initialTime)
         // console.log('deliveredTime : ', deliveredTime)
-    }
+    };
 
     // reset 함수 정의
     const reset = () => {
@@ -21,15 +22,19 @@ function FitnessTimer({onClose}) {
         setDeliveredTime(initialTime);
         // isActive 상태를 false로 전환
         setIsActive(false);
-    }
+    };
 
     // toggle 함수 정의
     const toggle = () => {
         // 현재의 isActive 상태와 반대로 전환
         // 예를들어 현재 false인 경우 true로 전환
         setIsActive(!isActive);
-    }
+    };
 
+    // useEffect = 부수 효과(side effects) 수행 목적
+    // 컴포넌트의 렌더링이 완료된 후 실행
+    // 종속성 배열에 따라 실행 조건이 결정되는 것이 특징
+    // 예를들면, 의존성을 부여한 것의 상태가 변경되면 실행
     useEffect(() => {
         // interval의 초기값을 null로 설정
         let interval = null;
@@ -43,16 +48,15 @@ function FitnessTimer({onClose}) {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-        // isActive, seconds에 의존성 부여
+        // isActive, deliveredTime 의존성 부여
+        // isActive의 상태가 true에서 false로 전환 시 실행 중지
+        // deliveredTime 값이 변경되면 useEffect 재실행
     }, [isActive, deliveredTime]);
 
     /* 타이머 숫자 표시 형식 */
     function formatTime(deliveredTime) {
-        // 시간의 경우 단순 나눗셈
         const hours = Math.floor(deliveredTime / 3600);
-        // 분의 경우 몫 표시
         const minutes = Math.floor((deliveredTime % 3600) / 60);
-        // 초의 경우 몫 표시
         const seconds = deliveredTime % 60;
     
         return (
@@ -64,6 +68,24 @@ function FitnessTimer({onClose}) {
                 <div>{seconds.toString().padStart(2, '0')}</div>
             </Fragment>
         )
+    };
+
+    const handleInputTime = (e) => {
+        const totalSeconds = parseInt(e.target.value, 10);
+        setInitialTime(totalSeconds);
+
+        // NaN = Not a Number = 숫자가 아닌 값
+        if(!isNaN(totalSeconds)) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            setDisplayTime({
+                hours: hours.toString(),
+                minutes: minutes.toString(),
+                seconds: seconds.toString()
+            });
+        }
     }
     
     // 소괄호 안에 있는 e = 이벤트 핸들러 함수가 이벤트 발생 시 전달받는 객체
@@ -76,7 +98,7 @@ function FitnessTimer({onClose}) {
         if(e.keyCode === 27) {
             onClose();
         }
-    }
+    };
 
     return (
         <div>
@@ -101,13 +123,15 @@ function FitnessTimer({onClose}) {
                         id='timer'
                         type='number'
                         value={initialTime}
-                        style={{width:'50px',textAlign:'center'}}
-                        onChange={(e) => {setInitialTime(e.target.value)}}
+                        style={{width:'30px',textAlign:'center'}}
+                        onChange={handleInputTime}
                         onKeyDown={keyboardHandler}
                         autoFocus
                     ></input>
+                    <label htmlFor='timer' style={{marginRight: '1rem'}}>초
+                        = {displayTime.hours}시간 {displayTime.minutes}분 {displayTime.seconds}초</label>
                     <button onClick={readyTimer}>타이머 설정</button>
-                    <span style={{marginRight:'15px'}}/>
+                    <span style={{marginRight:'1rem'}}/>
                     <button onClick={toggle}>{isActive ? '정지' : '시작'}</button>
                 </div>
 
