@@ -150,8 +150,10 @@ function MyCalendar(props) {
                 ></Editor>
             }
 
+            {/* showTimer의 상태가 true일 경우 FitnessTimer 컴포넌트 렌더링 */}
             {showTimer &&
                 <FitnessTimer
+                    // onClose prop = 익명 함수로 setShowTimer 상태를 false로 설정
                     onClose={() => setShowTimer(false)}
                 ></FitnessTimer>
             }

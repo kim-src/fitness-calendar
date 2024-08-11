@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function FitnessTimer({onClose}) {
-
+    
+    const [seconds, setSeconds] = useState(60);
+    const [isActive, setIsActive] = useState(false);
     const [width, setWidth] = useState(400);
     const [height, setHeight] = useState(200);
     const [boxSize, setBoxSize] = useState({
@@ -9,20 +11,55 @@ function FitnessTimer({onClose}) {
                                     height : '200px',
                                 });
 
+    // toggle 함수 정의
+    const toggle = () => {
+        setIsActive(!isActive);
+    }
+
+    // reset 함수 정의
+    const reset = () => {
+        setSeconds(60);
+        setIsActive(false);
+    }
+
+    useEffect(() => {
+        // interval의 초기값을 null로 설정
+        let interval = null;
+        // 타이머가 실행하고 싶을 경우
+        if(isActive) {
+            interval = setInterval(() => {
+                setSeconds(seconds => seconds - 1);
+            }, 1000);
+        // 타이머가 실행을 중지하고 싶을 경우
+        } else if(!isActive && seconds !== 0) {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+        // isActive, seconds에 의존성 부여
+    }, [isActive, seconds]);
+
+    // 비어있는 소괄호 = 실행될 예정이라는 의미
     const readyBoxSize = () => {
+        // boxSize 객체에 할당된 초기값 수정
         setBoxSize(
             {
+                // 현재까지의 boxSize 기준
                 ...boxSize,
+                // px 단위의 width 설정
                 width : `${width}px`,
+                // px 단위의 height 설정
                 height : `${height}px`,
             }
         )
     }
 
+    // 소괄호 안에 있는 e = 이벤트 핸들러 함수가 이벤트 발생 시 전달받는 객체
     const keyboardHandler = (e) => {
+        // 키보드 엔터 입력 시
         if(e.keyCode === 13) {
             readyBoxSize();
         }
+        // 키보드 ESC 입력 시
         if(e.keyCode === 27) {
             onClose();
         }
@@ -45,7 +82,9 @@ function FitnessTimer({onClose}) {
                     zIndex: 1000
                 }}
             >
+                {/* 타이머 설정 영역 */}
                 <div className='timerHandler' style={{display:'flex', justifyContent:'center'}}>
+                    {/* 너비 설정 */}
                     <label htmlFor='width' style={{marginRight:'5px'}}>너비 :</label>
                     <input
                         id='width'
@@ -60,6 +99,7 @@ function FitnessTimer({onClose}) {
 
                     <span style={{marginRight:'15px'}}/>
 
+                    {/* 너비 설정 */}
                     <label htmlFor='height' style={{marginRight:'5px'}}>높이 :</label>
                     <input
                         id='height'
@@ -72,27 +112,30 @@ function FitnessTimer({onClose}) {
                     ></input>
                     <button onClick={readyBoxSize}>타이머 생성</button>
                     <span style={{marginRight:'15px'}}/>
-                    <button >시작</button>
-                    <span style={{marginRight:'15px'}}/>
-                    <button >정지</button>                    
+                    <button onClick={toggle}>{isActive ? '시작' : '정지'}</button>
                 </div>
 
                 <br/>
 
+                {/* 타이머 표시 영역 */}
                 <div className='timerMain' style={{display:'flex', justifyContent:'center'}}>
                     <div
                         style={{
                             ...boxSize,
                             borderRadius: '10px',
-                            border: '1px solid black'
+                            border: '1px solid black',
+                            fontSize: '48px',
                         }}
-                    ></div>
+                    >
+                        {new Date(seconds * 1000).toISOString().substring(11, 19)}
+                    </div>
                 </div>
 
                 <br/>
 
+                {/* 타이머 footer 영역 */}
                 <div style={{display:'flex', justifyContent:'flex-end'}}>
-                    <button >중지 / 리셋</button>
+                    <button onClick={reset}>중지 / 리셋</button>
                     <span style={{marginRight:'15px'}}/>
                     <button onClick={onClose}>닫기</button>
                 </div>
