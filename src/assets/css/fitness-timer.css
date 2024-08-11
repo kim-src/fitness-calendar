@@ -1,0 +1,16 @@
+.timerDisplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-family: Arial;
+    color: #ffba00;
+    font-size: 230px;
+    background: black;
+    padding: 5%;
+    border-radius: 5px;
+}
+
+.colon {
+    margin-bottom: 3%;
+}

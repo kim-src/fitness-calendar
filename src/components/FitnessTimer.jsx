@@ -1,25 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import '../assets/css/fitness-timer.css'
 
 function FitnessTimer({onClose}) {
     
-    const [seconds, setSeconds] = useState(60);
+    const [initialTime, setInitialTime] = useState(0);
+    const [deliveredTime, setDeliveredTime] = useState(0);
     const [isActive, setIsActive] = useState(false);
-    const [width, setWidth] = useState(400);
-    const [height, setHeight] = useState(200);
-    const [boxSize, setBoxSize] = useState({
-                                    width : '400px',
-                                    height : '200px',
-                                });
 
-    // toggle 함수 정의
-    const toggle = () => {
-        setIsActive(!isActive);
+    /* 타이머 시간 설정 */
+    const readyTimer = () => {
+        // initialTime 상태 변수에 할당된 초기값 수정
+        setDeliveredTime(initialTime)
+        // console.log('initialTIme : ', initialTime)
+        // console.log('deliveredTime : ', deliveredTime)
     }
 
     // reset 함수 정의
     const reset = () => {
-        setSeconds(60);
+        // deliveredTime 초기화
+        setDeliveredTime(initialTime);
+        // isActive 상태를 false로 전환
         setIsActive(false);
+    }
+
+    // toggle 함수 정의
+    const toggle = () => {
+        // 현재의 isActive 상태와 반대로 전환
+        // 예를들어 현재 false인 경우 true로 전환
+        setIsActive(!isActive);
     }
 
     useEffect(() => {
@@ -28,36 +36,41 @@ function FitnessTimer({onClose}) {
         // 타이머가 실행하고 싶을 경우
         if(isActive) {
             interval = setInterval(() => {
-                setSeconds(seconds => seconds - 1);
+                setDeliveredTime(deliveredTime => deliveredTime - 1);
             }, 1000);
         // 타이머가 실행을 중지하고 싶을 경우
-        } else if(!isActive && seconds !== 0) {
+        } else if(!isActive && deliveredTime !== 0) {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
         // isActive, seconds에 의존성 부여
-    }, [isActive, seconds]);
+    }, [isActive, deliveredTime]);
 
-    // 비어있는 소괄호 = 실행될 예정이라는 의미
-    const readyBoxSize = () => {
-        // boxSize 객체에 할당된 초기값 수정
-        setBoxSize(
-            {
-                // 현재까지의 boxSize 기준
-                ...boxSize,
-                // px 단위의 width 설정
-                width : `${width}px`,
-                // px 단위의 height 설정
-                height : `${height}px`,
-            }
+    /* 타이머 숫자 표시 형식 */
+    function formatTime(deliveredTime) {
+        // 시간의 경우 단순 나눗셈
+        const hours = Math.floor(deliveredTime / 3600);
+        // 분의 경우 몫 표시
+        const minutes = Math.floor((deliveredTime % 3600) / 60);
+        // 초의 경우 몫 표시
+        const seconds = deliveredTime % 60;
+    
+        return (
+            <Fragment>
+                <div>{hours.toString().padStart(2, '0')}</div>
+                <span className='colon'>:</span>
+                <div>{minutes.toString().padStart(2, '0')}</div>
+                <span className='colon'>:</span>
+                <div>{seconds.toString().padStart(2, '0')}</div>
+            </Fragment>
         )
     }
-
+    
     // 소괄호 안에 있는 e = 이벤트 핸들러 함수가 이벤트 발생 시 전달받는 객체
     const keyboardHandler = (e) => {
         // 키보드 엔터 입력 시
         if(e.keyCode === 13) {
-            readyBoxSize();
+            readyTimer();
         }
         // 키보드 ESC 입력 시
         if(e.keyCode === 27) {
@@ -83,36 +96,19 @@ function FitnessTimer({onClose}) {
                 }}
             >
                 {/* 타이머 설정 영역 */}
-                <div className='timerHandler' style={{display:'flex', justifyContent:'center'}}>
-                    {/* 너비 설정 */}
-                    <label htmlFor='width' style={{marginRight:'5px'}}>너비 :</label>
+                <div style={{display:'flex', justifyContent:'center'}}>
                     <input
-                        id='width'
+                        id='timer'
                         type='number'
-                        value={width}
-                        style={{width:'50px',height:'',textAlign:'center'}}
-                        onChange={(e) => {setWidth(e.target.value)}}
-                        placeholder='숫자 입력'
+                        value={initialTime}
+                        style={{width:'50px',textAlign:'center'}}
+                        onChange={(e) => {setInitialTime(e.target.value)}}
+                        onKeyDown={keyboardHandler}
                         autoFocus
-                        onKeyDown={keyboardHandler}
                     ></input>
-
+                    <button onClick={readyTimer}>타이머 설정</button>
                     <span style={{marginRight:'15px'}}/>
-
-                    {/* 너비 설정 */}
-                    <label htmlFor='height' style={{marginRight:'5px'}}>높이 :</label>
-                    <input
-                        id='height'
-                        type='number'
-                        value={height}
-                        style={{width:'50px',height:'',textAlign:'center',marginRight:'15px'}}
-                        onChange={(e) => {setHeight(e.target.value)}}
-                        placeholder='숫자 입력'
-                        onKeyDown={keyboardHandler}
-                    ></input>
-                    <button onClick={readyBoxSize}>타이머 생성</button>
-                    <span style={{marginRight:'15px'}}/>
-                    <button onClick={toggle}>{isActive ? '시작' : '정지'}</button>
+                    <button onClick={toggle}>{isActive ? '정지' : '시작'}</button>
                 </div>
 
                 <br/>
@@ -120,14 +116,15 @@ function FitnessTimer({onClose}) {
                 {/* 타이머 표시 영역 */}
                 <div className='timerMain' style={{display:'flex', justifyContent:'center'}}>
                     <div
+                        className='timerDisplay'
                         style={{
-                            ...boxSize,
+                            width: '1200px',
+                            height: '200px',
                             borderRadius: '10px',
                             border: '1px solid black',
-                            fontSize: '48px',
                         }}
                     >
-                        {new Date(seconds * 1000).toISOString().substring(11, 19)}
+                        {formatTime(deliveredTime)}
                     </div>
                 </div>
 
@@ -135,7 +132,7 @@ function FitnessTimer({onClose}) {
 
                 {/* 타이머 footer 영역 */}
                 <div style={{display:'flex', justifyContent:'flex-end'}}>
-                    <button onClick={reset}>중지 / 리셋</button>
+                    <button onClick={reset}>리셋</button>
                     <span style={{marginRight:'15px'}}/>
                     <button onClick={onClose}>닫기</button>
                 </div>

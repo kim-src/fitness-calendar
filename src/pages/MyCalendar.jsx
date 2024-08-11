@@ -33,6 +33,7 @@ function MyCalendar(props) {
         setSelectedDate(arg.dateStr);
     }
 
+    // 비어있는 소괄호 = 실행될 예정이라는 의미
     const goFitnessTimer = () => {
         setShowTimer(true);
     }
@@ -66,6 +67,7 @@ function MyCalendar(props) {
     };
 
     // handleIsDone 함수에 전달된 인자 = event 객체의 id
+    // 이벤트 핸들러 함수가 이벤트 발생 시 전달받는 event 객체의 id
     const handleIsDone = (id) => {
         // 업데이트 된 contents 상태에 접근
         // currentEvents.map = 모든 이벤트를 순회하며 특정 조건에 따른 업데이트 수행
