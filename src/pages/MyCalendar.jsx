@@ -6,6 +6,7 @@ import '../assets/css/calendar.css'
 import '../assets/css/time-button.css'
 import Editor from '../components/Editor'
 import FitnessItem from '../components/FitnessItem'
+import FitnessStopwatch from '../components/FitnessStopwatch'
 import FitnessTimer from '../components/FitnessTimer'
 
 function MyCalendar(props) {
@@ -19,6 +20,8 @@ function MyCalendar(props) {
     const [selectedDate, setSelectedDate] = useState(null);
     // showEditor = Editor 컴포넌트의 상태를 저장하는 상태 변수
     const [showEditor, setShowEditor] = useState(false);
+    // showStopwatch = FitnessStopwatch 컴포넌트의 상태를 저장하는 상태 변수
+    const [showStopwatch, setShowStopwatch] = useState(false);
     // showTimer = FitnessTimer 컴포넌트의 상태를 저장하는 상태 변수
     const [showTimer, setShowTimer] = useState(false);
     // id 부여를 위한 useRef 훅 사용
@@ -36,6 +39,10 @@ function MyCalendar(props) {
     // 비어있는 소괄호 = 실행될 예정이라는 의미
     const goFitnessTimer = () => {
         setShowTimer(true);
+    }
+
+    const goFitnessStopwatch = () => {
+        setShowStopwatch(true);
     }
 
     // Editor.jsx에서 title이 입력될 경우 실행
@@ -115,7 +122,7 @@ function MyCalendar(props) {
             <div className='time-button'>
                 <button
                     className='stopwatch-button'
-                    onClick={goFitnessTimer}
+                    onClick={goFitnessStopwatch}
                 >스톱워치</button>
                 <button
                     className='timer-button'
@@ -150,6 +157,14 @@ function MyCalendar(props) {
                     // onSave prop = Editor 컴포넌트와 상호작용하여 데이터 수신
                     onSave={saveRoutine}
                 ></Editor>
+            }
+
+            {/* showStopwatch의 상태가 true일 경우 FitnessStopwatch 컴포넌트 렌더링 */}
+            {showStopwatch &&
+                <FitnessStopwatch
+                    // onClose prop = 익명 함수로 setShowTimer 상태를 false로 설정
+                    onClose={() => setShowStopwatch(false)}
+                ></FitnessStopwatch>
             }
 
             {/* showTimer의 상태가 true일 경우 FitnessTimer 컴포넌트 렌더링 */}

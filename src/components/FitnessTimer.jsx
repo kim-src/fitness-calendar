@@ -38,12 +38,12 @@ function FitnessTimer({onClose}) {
     useEffect(() => {
         // interval의 초기값을 null로 설정
         let interval = null;
-        // 타이머가 실행하고 싶을 경우
+        // 타이머를 실행하고 싶을 경우
         if(isActive) {
             interval = setInterval(() => {
                 setDeliveredTime(deliveredTime => deliveredTime - 1);
             }, 1000);
-        // 타이머가 실행을 중지하고 싶을 경우
+        // 타이머 실행을 중지하고 싶을 경우
         } else if(!isActive && deliveredTime !== 0) {
             clearInterval(interval);
         }
