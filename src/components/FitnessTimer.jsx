@@ -56,9 +56,12 @@ function FitnessTimer({onClose}) {
     /* 타이머 숫자 표시 형식 */
     function formatTime(deliveredTime) {
         const hours = Math.floor(deliveredTime / 3600);
+        // %로 나머지 계산
         const minutes = Math.floor((deliveredTime % 3600) / 60);
+        // %로 나머지 계산
         const seconds = deliveredTime % 60;
     
+        // 변수 선언을 최소화하기 위해 join 제외
         return (
             <Fragment>
                 <div>{hours.toString().padStart(2, '0')}</div>

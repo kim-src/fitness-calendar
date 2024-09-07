@@ -4,10 +4,10 @@ import FullCalendar from '@fullcalendar/react'
 import React, { useRef, useState } from 'react'
 import '../assets/css/calendar.css'
 import '../assets/css/time-button.css'
-import Editor from '../components/Editor'
 import FitnessItem from '../components/FitnessItem'
 import FitnessStopwatch from '../components/FitnessStopwatch'
 import FitnessTimer from '../components/FitnessTimer'
+import Scheduler from '../components/Scheduler'
 
 function MyCalendar(props) {
 
@@ -18,8 +18,8 @@ function MyCalendar(props) {
     const [contents, setContents] = useState([]);
     // selectedDate = 선택된 날짜를 저장하는 상태 변수
     const [selectedDate, setSelectedDate] = useState(null);
-    // showEditor = Editor 컴포넌트의 상태를 저장하는 상태 변수
-    const [showEditor, setShowEditor] = useState(false);
+    // showScheduler = Scheduler 컴포넌트의 상태를 저장하는 상태 변수
+    const [showScheduler, setShowScheduler] = useState(false);
     // showStopwatch = FitnessStopwatch 컴포넌트의 상태를 저장하는 상태 변수
     const [showStopwatch, setShowStopwatch] = useState(false);
     // showTimer = FitnessTimer 컴포넌트의 상태를 저장하는 상태 변수
@@ -29,8 +29,8 @@ function MyCalendar(props) {
 
     // arg = FullCalendar의 dateClick 이벤트 핸들러에서 전달되는 인자
     const addRoutine = (arg) => {
-        // 달력 내부를 클릭하면 setShowEditor의 상태를 true로 변환
-        setShowEditor(true);
+        // 달력 내부를 클릭하면 setShowScheduler의 상태를 true로 변환
+        setShowScheduler(true);
         // 달력 내부를 클릭하면 클릭된 날짜를 setSelectedDate에 전달
         // arg.dateStr = FullCalendar 라이브러리에서 제공하는 arg 객체의 속성
         setSelectedDate(arg.dateStr);
@@ -45,7 +45,7 @@ function MyCalendar(props) {
         setShowStopwatch(true);
     }
 
-    // Editor.jsx에서 title이 입력될 경우 실행
+    // Scheduler.jsx에서 title이 입력될 경우 실행
     const saveRoutine = (title) => {
         if(title) {
             // newContent 객체를 contents 배열에 추가
@@ -68,8 +68,8 @@ function MyCalendar(props) {
             // currentContents = contents 배열의 상태 참조 매개변수
             // newContent = title 및 date 데이터를 포함하는 이벤트 객체
             setContents(currentContents => [...currentContents, newContent]);
-            // 내용 추가 후 Editor 컴포넌트 상태 false로 변경
-            setShowEditor(false);
+            // 내용 추가 후 Scheduler 컴포넌트 상태 false로 변경
+            setShowScheduler(false);
         }
     };
 
@@ -112,7 +112,7 @@ function MyCalendar(props) {
                 // parseInt = event.id를 정수로 변환하는 기능 제공
                 // parseInt 사용으로 FullCalendar에서 이벤트 id를 문자열로 처리하는 문제 해결
                 onToggle={() => handleIsDone(parseInt(event.id))}
-            ></FitnessItem>
+            />
         );
     };
 
@@ -145,18 +145,18 @@ function MyCalendar(props) {
                 dateClick={addRoutine}
                 // button 텍스트 수정을 위한 속성
                 buttonText={{ today : '이번달' }}
-            ></FullCalendar>
+            />
 
-            {/* showEditor의 상태가 true일 경우 Editor 컴포넌트 렌더링 */}
-            {showEditor &&
-                <Editor
-                    // date prop = Editor 컴포넌트에 selectedDate 전달
+            {/* showScheduler의 상태가 true일 경우 Scheduler 컴포넌트 렌더링 */}
+            {showScheduler &&
+                <Scheduler
+                    // date prop = Scheduler 컴포넌트에 selectedDate 전달
                     date={selectedDate}
-                    // onClose prop = 익명 함수로 setShowEditor 상태를 false로 설정
-                    onClose={() => setShowEditor(false)}
-                    // onSave prop = Editor 컴포넌트와 상호작용하여 데이터 수신
+                    // onClose prop = 익명 함수로 setShowScheduler 상태를 false로 설정
+                    onClose={() => setShowScheduler(false)}
+                    // onSave prop = Scheduler 컴포넌트와 상호작용하여 데이터 수신
                     onSave={saveRoutine}
-                ></Editor>
+                />
             }
 
             {/* showStopwatch의 상태가 true일 경우 FitnessStopwatch 컴포넌트 렌더링 */}
@@ -164,7 +164,7 @@ function MyCalendar(props) {
                 <FitnessStopwatch
                     // onClose prop = 익명 함수로 setShowTimer 상태를 false로 설정
                     onClose={() => setShowStopwatch(false)}
-                ></FitnessStopwatch>
+                />
             }
 
             {/* showTimer의 상태가 true일 경우 FitnessTimer 컴포넌트 렌더링 */}
@@ -172,7 +172,7 @@ function MyCalendar(props) {
                 <FitnessTimer
                     // onClose prop = 익명 함수로 setShowTimer 상태를 false로 설정
                     onClose={() => setShowTimer(false)}
-                ></FitnessTimer>
+                />
             }
         </div>
     )

@@ -46,9 +46,12 @@ function FitnessStopwatch({onClose}) {
     /* 스톱워치 숫자 표시 형식 */
     function formatTime(initialTime) {
         const hours = Math.floor(initialTime / 3600);
+        // %로 나머지 계산
         const minutes = Math.floor((initialTime % 3600) / 60);
+        // %로 나머지 계산
         const seconds = initialTime % 60;
     
+        // 변수 선언을 최소화하기 위해 join 제외
         return (
             <Fragment>
                 <div>{hours.toString().padStart(2, '0')}</div>

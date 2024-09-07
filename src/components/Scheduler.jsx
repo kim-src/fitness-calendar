@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import '../assets/css/scheduler-style.css'
 
 // MyCalendar 컴포넌트로부터 전달되는 date, onClose, onSave props
 // props (properties)= 부모 컴포넌트에서 자식 컴포넌트로 데이터를 전달할 때 사용
 // props로 전달받은 데이터를 렌더링하는 과정 발생
-function Editor({date, onClose, onSave}) {
+function Scheduler({date, onClose, onSave}) {
 
     // 운동 내용 입력을 위한 useState 사용
     // title = FullCalendar의 내용 속성
@@ -30,28 +31,12 @@ function Editor({date, onClose, onSave}) {
 
     return (
         <div>
-            <div>
-
-            </div>
-            <div
-                style={{
-                    // 상단으로부터 20%, 좌측으로부터 50% 위치에 고정
-                    position : 'absolute',
-                    top: '20%',
-                    left: '50%',
-                    // 컴포넌트의 너비에 상관없이 항상 중앙에 위치하도록 설정
-                    transform: 'translateX(-50%)',
-                    background: 'white',
-                    padding: '20px',
-                    boxShadow: '0 2px 7px rgba(0,0,0,0.7)',
-                    // z-index 값 조정
-                    zIndex: 1000
-                }}
-            >
+            <div className='scheduler-container'>
                 {/* MyCalendar 컴포넌트의 date */}
-                <h2 style={{textAlign:'center'}}>{date}</h2>
+                <div className='scheduler-title'>{date}</div>
                 {/* 사용자에게 내용 입력 기능 제공 */}
                 <input
+                    className='scheduler-input'
                     type="text"
                     // 자동으로 포커스 설정
                     autoFocus
@@ -73,4 +58,4 @@ function Editor({date, onClose, onSave}) {
     );
 }
 
-export default Editor;
+export default Scheduler;

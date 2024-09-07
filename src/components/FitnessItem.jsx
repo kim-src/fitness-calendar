@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ItemEditor from './ItemEditor';
 
 function FitnessItem({title, isDone, onToggle}) {
+
+    const [showItemEditor, setShowItemEditor] = useState(false);
+
     return (
-        <div className='fitness-item'>
+        <div
+            className='fitness-item'
+            onClick={() => setShowItemEditor(true)}
+        >
             <input
                 type='checkbox'
                 checked={isDone}
@@ -15,6 +22,11 @@ function FitnessItem({title, isDone, onToggle}) {
                     color : isDone ? 'gray' : ''
                 }}
             >{title}</span>
+            {showItemEditor &&
+                <ItemEditor
+                    onClose={() => setShowItemEditor(false)}
+                />
+            }
         </div>
     );
 }
