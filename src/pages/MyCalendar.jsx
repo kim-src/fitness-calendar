@@ -36,6 +36,18 @@ function MyCalendar(props) {
         setSelectedDate(arg.dateStr);
     }
 
+    // 등록된 운동 루틴을 삭제하는 함수 정의
+    // id 매개변수 수신
+    const deleteRoutine = (id) => {
+        // 현재의 currentContents를 매개변수로 받는 콜백 함수 사용
+        // currentContents 배열에 Array.prototype.filter 메서드 사용
+        // filter 메서드의 역할 : 주어진 조건에 맞는 요소만을 포함하는 새 배열 생성
+        // 주어진 id 매개변수와 content 객체의 id 속성이 일치하지 않는 경우에만 배열에 포함
+        // 수신된 id 매개변수와 일치할 경우 해당 요소 제외
+        setContents(currentContents => currentContents.filter(content => content.id !== id));
+    }
+
+
     // 비어있는 소괄호 = 실행될 예정이라는 의미
     const goFitnessTimer = () => {
         setShowTimer(true);
@@ -61,7 +73,7 @@ function MyCalendar(props) {
             };
 
             // 객체 상태 확인(디버깅)
-            console.log("새로운 운동 루틴 :", newContent);
+            console.log("새로운 운동 루틴 : ", newContent);
 
             // currentContents를 이용한 현재 상태 참조
             // newContent를 이벤트 목록에 추가하고 상태 업데이트
@@ -70,6 +82,23 @@ function MyCalendar(props) {
             setContents(currentContents => [...currentContents, newContent]);
             // 내용 추가 후 Scheduler 컴포넌트 상태 false로 변경
             setShowScheduler(false);
+        }
+    };
+
+    const updateRoutine = (id, updatedTitle) => {
+        console.log("아이디 : ", id);
+        console.log("내용 : ", updatedTitle);
+
+        if(updatedTitle) {
+            const updatedContent = {
+                id : id,
+                title : updatedTitle,
+                date : selectedDate,
+            };
+
+            console.log("업데이트 된 운동 루틴 : ", updatedContent);
+
+            setContents(currentContents => [...currentContents, updatedContent]);
         }
     };
 
@@ -100,6 +129,7 @@ function MyCalendar(props) {
 
         return (
             // FitnessItem 호출
+            // id, title, isDone, onToggle, onDelete prop 추가
             <FitnessItem
                 // FitnessItem 컴포넌트에 id 값 전달
                 id={event.id}
@@ -112,6 +142,8 @@ function MyCalendar(props) {
                 // parseInt = event.id를 정수로 변환하는 기능 제공
                 // parseInt 사용으로 FullCalendar에서 이벤트 id를 문자열로 처리하는 문제 해결
                 onToggle={() => handleIsDone(parseInt(event.id))}
+                onUpdate={updateRoutine}
+                onDelete={() => deleteRoutine(parseInt(event.id))}
             />
         );
     };

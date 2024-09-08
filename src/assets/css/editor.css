@@ -1,4 +1,4 @@
-.scheduler-container {
+.editor-container {
     width: 300px;
     height: 150px;
     position : absolute;
@@ -12,12 +12,14 @@
     text-align: center;
 }
 
-.scheduler-title {
+.editor-title {
     text-align : center;
     font-size: 1.5rem;
     font-weight: 700;
 }
 
-.scheduler-input {
+.editor-input {
     margin: 10% 5%;
+    width: 150px;
+    height: 25px;
 }

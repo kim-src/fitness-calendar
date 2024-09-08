@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../assets/css/scheduler-style.css'
+import '../assets/css/editor.css'
 
 // MyCalendar 컴포넌트로부터 전달되는 date, onClose, onSave props
 // props (properties)= 부모 컴포넌트에서 자식 컴포넌트로 데이터를 전달할 때 사용
@@ -8,7 +8,7 @@ function Scheduler({date, onClose, onSave}) {
 
     // 운동 내용 입력을 위한 useState 사용
     // title = FullCalendar의 내용 속성
-    const [title, setTitle] = useState('');    
+    const [title, setTitle] = useState('');
 
     // 저장 버튼 클릭 시 호출될 handleSave 함수 정의
     const handleSave = () => {
@@ -18,7 +18,7 @@ function Scheduler({date, onClose, onSave}) {
         setTitle('');
     }
 
-    // 이벤트 발생 시 enterHandleSave 함수 실행
+    // 이벤트 발생 시 keyHandler 함수 실행
     const keyHandler = (e) => {
         // 엔터 입력 시 handleSave 함수 실행
         if(e.keyCode === 13) {
@@ -31,12 +31,12 @@ function Scheduler({date, onClose, onSave}) {
 
     return (
         <div>
-            <div className='scheduler-container'>
+            <div className='editor-container'>
                 {/* MyCalendar 컴포넌트의 date */}
-                <div className='scheduler-title'>{date}</div>
+                <div className='editor-title'>{date}</div>
                 {/* 사용자에게 내용 입력 기능 제공 */}
                 <input
-                    className='scheduler-input'
+                    className='editor-input'
                     type="text"
                     // 자동으로 포커스 설정
                     autoFocus
@@ -48,7 +48,7 @@ function Scheduler({date, onClose, onSave}) {
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="운동 루틴을 입력하세요."
                     onKeyDown={keyHandler}
-                ></input>
+                />
                 {/* handleSave 함수에 데이터 저장 */}
                 <button onClick={handleSave}>저장</button>
                 {/* 에디터를 종료시키는 onClose 함수 호출 */}
