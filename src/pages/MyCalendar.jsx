@@ -72,7 +72,7 @@ function MyCalendar(props) {
                 isDone : false
             };
 
-            // 객체 상태 확인(디버깅)
+            // 생성 결과 확인을 위한 콘솔 출력
             console.log("새로운 운동 루틴 : ", newContent);
 
             // currentContents를 이용한 현재 상태 참조
@@ -86,20 +86,20 @@ function MyCalendar(props) {
     };
 
     const updateRoutine = (id, updatedTitle) => {
-        console.log("아이디 : ", id);
-        console.log("내용 : ", updatedTitle);
-
-        if(updatedTitle) {
-            const updatedContent = {
-                id : id,
-                title : updatedTitle,
-                date : selectedDate,
-            };
-
-            console.log("업데이트 된 운동 루틴 : ", updatedContent);
-
-            setContents(currentContents => [...currentContents, updatedContent]);
-        }
+        setContents(currentContents => currentContents.map(event => {
+            // id가 일치할 경우
+            if(event.id === id) {
+                // updatedContent 객체 생성
+                // event 객체의 title 속성을 prop으로 전달받은 updatedTitle로 변경
+                const updatedContent = {...event, title : updatedTitle};
+                // 수정 결과 확인을 위한 콘솔 출력
+                console.log("수정된 운동 루틴 : ", updatedContent);
+                // 수정 결과 최종 전달
+                return updatedContent;
+            }
+            // id가 일치하지 않을 경우 기존의 event 객체 반환
+            return event;
+        }));
     };
 
     // handleIsDone 함수에 전달된 인자 = event 객체의 id
@@ -113,7 +113,7 @@ function MyCalendar(props) {
             // event 객체의 isDone을 event 객체의 isDone이 아니게 설정
             // 즉, false 상태의 isDone을 true로 변환
             // 아니라면 event 객체 상태 유지
-            event.id === id ? { ...event, isDone : !event.isDone } : event
+            event.id === id ? {...event, isDone : !event.isDone} : event
         ));
     };
 
@@ -142,7 +142,7 @@ function MyCalendar(props) {
                 // parseInt = event.id를 정수로 변환하는 기능 제공
                 // parseInt 사용으로 FullCalendar에서 이벤트 id를 문자열로 처리하는 문제 해결
                 onToggle={() => handleIsDone(parseInt(event.id))}
-                onUpdate={updateRoutine}
+                onUpdate={(updatedTitle) => updateRoutine(parseInt(event.id), updatedTitle)}
                 onDelete={() => deleteRoutine(parseInt(event.id))}
             />
         );

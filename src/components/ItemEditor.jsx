@@ -9,9 +9,10 @@ function ItemEditor({id, title, onUpdate, onClose, onDelete}) {
 
     // 저장 버튼 클릭 시 호출될 handleUpdate 함수 정의
     const handleUpdate = () => {
-        onUpdate(id, updatedTitle);  // onUpdate에 업데이트 된 내용 전달
+        // onUpdate에 업데이트 된 내용 전달
+        onUpdate(updatedTitle);
         setUpdatedTitle('');
-        onClose();  // 업데이트 후 에디터 닫기
+        onClose();
     }
 
     // 이벤트 발생 시 keyHandler 함수 실행
