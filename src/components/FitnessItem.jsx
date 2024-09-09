@@ -7,6 +7,15 @@ function FitnessItem({id, title, isDone, onUpdate, onToggle, onDelete}) {
 
     return (
         <div>
+            {showItemEditor &&
+                <ItemEditor
+                    id={id}
+                    title={title}
+                    onUpdate={onUpdate}
+                    onDelete={onDelete}
+                    onClose={() => setShowItemEditor(false)}
+                />
+            }
             <div
                 className='fitness-item'
                 onClick={() => setShowItemEditor(true)}
@@ -25,15 +34,6 @@ function FitnessItem({id, title, isDone, onUpdate, onToggle, onDelete}) {
                     }}
                 >{title}</span>
             </div>
-            {showItemEditor &&
-                <ItemEditor
-                    id={id}
-                    title={title}
-                    onUpdate={onUpdate}
-                    onDelete={onDelete}
-                    onClose={() => setShowItemEditor(false)}
-                />
-            }
         </div>
     );
 }

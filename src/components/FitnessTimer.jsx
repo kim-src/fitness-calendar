@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import '../assets/css/fitness-timer.css'
+import '../assets/css/time.css'
 
 function FitnessTimer({onClose}) {
     
@@ -105,21 +105,7 @@ function FitnessTimer({onClose}) {
 
     return (
         <div>
-            <div
-                style={{
-                    // 상단으로부터 20%, 좌측으로부터 50% 위치에 고정
-                    position : 'absolute',
-                    top: '20%',
-                    left: '50%',
-                    // 컴포넌트의 너비에 상관없이 항상 중앙에 위치하도록 설정
-                    transform: 'translateX(-50%)',
-                    background: 'white',
-                    padding: '20px',
-                    boxShadow: '0 2px 7px rgba(0,0,0,0.7)',
-                    // z-index 값 조정
-                    zIndex: 1000
-                }}
-            >
+            <div className='time-place'>
                 {/* 타이머 설정 영역 */}
                 <div style={{display:'flex', justifyContent:'center'}}>
                     <input
@@ -128,38 +114,38 @@ function FitnessTimer({onClose}) {
                         value={initialTime}
                         style={{width:'30px',textAlign:'center'}}
                         onChange={handleInputTime}
-                        onKeyDown={keyboardHandler}
                         autoFocus
+                        onKeyDown={keyboardHandler}
                     ></input>
                     <label htmlFor='timer' style={{marginRight: '1rem'}}>초
                         = {displayTime.hours}시간 {displayTime.minutes}분 {displayTime.seconds}초</label>
-                    <button onClick={readyTimer}>타이머 설정</button>
+                    <button onClick={readyTimer}
+                            autoFocus
+                            onKeyDown={keyboardHandler}
+                    >타이머 설정</button>
                     <span style={{marginRight:'1rem'}}/>
-                    <button onClick={toggle}>{isActive ? '정지' : '시작'}</button>
+                    <button onClick={toggle}
+                            autoFocus
+                            onKeyDown={keyboardHandler}
+                    >{isActive ? '정지' : '시작'}</button>
                 </div>
 
                 <br/>
 
                 {/* 타이머 표시 영역 */}
-                <div className='timerMain' style={{display:'flex', justifyContent:'center'}}>
-                    <div
-                        className='timerDisplay'
-                        style={{
-                            width: '1200px',
-                            height: '200px',
-                            borderRadius: '10px',
-                            border: '1px solid black',
-                        }}
-                    >
-                        {formatTime(deliveredTime)}
-                    </div>
+                <div className='time-exterior'>
+                    {/* 스톱워치 내부 영역 */}
+                    <div className='time-interior'>{formatTime(deliveredTime)}</div>
                 </div>
 
                 <br/>
 
                 {/* 타이머 footer 영역 */}
                 <div style={{display:'flex', justifyContent:'flex-end'}}>
-                    <button onClick={reset}>리셋</button>
+                    <button onClick={reset}
+                            autoFocus
+                            onKeyDown={keyboardHandler}
+                    >리셋</button>
                     <span style={{marginRight:'15px'}}/>
                     <button onClick={onClose}>닫기</button>
                 </div>

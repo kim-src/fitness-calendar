@@ -1,0 +1,39 @@
+.time-place {
+    position : absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.7);
+    z-index: 1000;
+}
+
+.time-interior {
+    width: 1200px;
+    height: 200px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial;
+    color: #ffba00;
+    font-size: 230px;
+    background: black;
+    padding: 5%;
+    border-radius: 5px;
+}
+
+.time-exterior {
+    display: flex;
+    justify-content: center;
+}
+
+.time-button {
+    display: flex;
+    justify-content: center;
+}
+
+.colon {
+    margin-bottom: 3%;
+}
