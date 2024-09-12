@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ItemEditor from './ItemEditor';
 
-function FitnessItem({id, title, isDone, onUpdate, onToggle, onDelete}) {
+function FitnessItem({id, title, date, isDone, onUpdate, onToggle, onDelete}) {
 
     const [showItemEditor, setShowItemEditor] = useState(false);
 
@@ -11,6 +11,7 @@ function FitnessItem({id, title, isDone, onUpdate, onToggle, onDelete}) {
                 <ItemEditor
                     id={id}
                     title={title}
+                    date={date}
                     onUpdate={onUpdate}
                     onDelete={onDelete}
                     onClose={() => setShowItemEditor(false)}

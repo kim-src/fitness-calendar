@@ -112,7 +112,7 @@ function FitnessTimer({onClose}) {
                         id='timer'
                         type='number'
                         value={initialTime}
-                        style={{width:'30px',textAlign:'center'}}
+                        style={{width:'40px',textAlign:'center'}}
                         onChange={handleInputTime}
                         autoFocus
                         onKeyDown={keyboardHandler}

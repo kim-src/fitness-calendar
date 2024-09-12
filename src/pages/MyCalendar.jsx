@@ -135,6 +135,7 @@ function MyCalendar(props) {
                 id={event.id}
                 // FitnessItem 컴포넌트에 title 값 전달
                 title={event.title}
+                date={selectedDate}
                 // event 객체의 extendedProps 속성의 isDone 속성값 전달
                 isDone={event.extendedProps.isDone}
                 // Toggle = 반전 기능 관련

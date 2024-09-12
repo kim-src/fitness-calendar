@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../assets/css/editor.css';
 
-function ItemEditor({id, title, onUpdate, onClose, onDelete}) {
+function ItemEditor({id, title, date, onUpdate, onClose, onDelete}) {
 
     // 운동 내용 입력을 위한 useState 사용
     // title = FullCalendar의 내용 속성
@@ -29,6 +29,7 @@ function ItemEditor({id, title, onUpdate, onClose, onDelete}) {
     return (
         <div>
             <div className='editor-container'>
+                <div className='editor-title'>{date}</div>
                 {/* 사용자에게 내용 입력 기능 제공 */}
                 <input
                     className='editor-input'
@@ -46,10 +47,7 @@ function ItemEditor({id, title, onUpdate, onClose, onDelete}) {
 
                 <button onClick={handleUpdate}>수정</button>
                 <button onClick={() => onDelete(id)}>삭제</button>
-                <button onClick={(e) => {
-                    e.stopPropagation();
-                    onClose();
-                }}>취소</button>
+                <button onClick={onClose}>취소</button>
             </div>
         </div>
     );

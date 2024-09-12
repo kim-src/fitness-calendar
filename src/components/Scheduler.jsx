@@ -32,7 +32,6 @@ function Scheduler({date, onClose, onSave}) {
     return (
         <div>
             <div className='editor-container'>
-                {/* MyCalendar 컴포넌트의 date */}
                 <div className='editor-title'>{date}</div>
                 {/* 사용자에게 내용 입력 기능 제공 */}
                 <input
